@@ -42,9 +42,9 @@
 
   /* ── CTA DATA ──────────────────────────── */
   var ctaData = [
-    { h: 'A New Beginning',      p: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod labore et dolore in aliqua.' },
-    { h: 'Your Story in Ink',    p: 'Every tattoo tells a tale. Let our artists craft something that speaks forever in your skin.' },
-    { h: 'Art Becomes Identity', p: 'Premium tattooing where design meets precision. Built for those who seek the extraordinary.' }
+    { h: 'Start Your Ink Journey',      p: 'Crafted with passion, designed to tell your story.' },
+    { h: 'Design Your Identity',    p: 'Every line is drawn to represent who you are.' },
+    { h: 'Experience True Art', p: 'Where creativity meets precision and perfection.' }
   ];
 
   /* ══════════════════════════════════════════

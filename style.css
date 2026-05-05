@@ -206,7 +206,7 @@ body {
   z-index: 50;
   display: flex;
   align-items: center;
-  padding: 26px 44px 26px 28px;
+  padding: 10px 44px 10px 28px;
   gap: 32px;
 }
 
@@ -219,14 +219,15 @@ body {
 }
 
 .brand-icon {
-  width: 40px;
-  height: 40px;
+  width: 80px;
+  height: 80px;
   flex-shrink: 0;
 }
 
-.brand-icon svg {
+.brand-icon img {
   width: 100%;
   height: 100%;
+  object-fit: cover;
 }
 
 .brand-name {
@@ -410,6 +411,8 @@ body {
   gap: 0;
   padding: 0 0 0 14px;
   width: 100%;
+  position: relative;
+  top: 35px;
 }
 
 .track-card {
@@ -471,6 +474,7 @@ body {
   align-items: center;
   gap: 12px;
   padding-left: 26px;
+  z-index: 1000;
 }
 
 .soc-link {
@@ -1129,6 +1133,7 @@ body {
   overflow: hidden;
   transition: border-color .4s, color .4s, box-shadow .4s;
   width: fit-content;
+  z-index: 1;
 }
 
 .ab-btn::before {
@@ -1139,7 +1144,7 @@ body {
   transform: scaleX(0);
   transform-origin: left;
   transition: transform .45s cubic-bezier(0.76, 0, 0.24, 1);
-  z-index: 0;
+  z-index: -1;
 }
 
 .ab-btn:hover::before {
@@ -1181,7 +1186,7 @@ body {
   inset: 0;
   background-size: cover;
   background-position: center;
-  filter: brightness(0.38) contrast(1.1);
+  filter: brightness(0.58) contrast(1.1);
   transform: scale(1.04);
   will-change: transform;
   transition: transform 1.2s ease;
@@ -3188,7 +3193,7 @@ body {
   inset: 0;
   background-size: cover;
   background-position: center;
-  filter: blur(40px) brightness(0.2);
+  filter: blur(4px) brightness(0.5);
   transform: scale(1.1);
   opacity: 0.6;
 }
@@ -3196,7 +3201,7 @@ body {
 .footer-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, #050505 0%, rgba(5, 5, 5, 0.8) 100%);
+  background: linear-gradient(to top, #050505 0%, rgba(5, 5, 5, 0.8) 80%);
 }
 
 /* ── CONTENT ── */
@@ -3225,11 +3230,14 @@ body {
   display: flex;
   align-items: center;
   gap: 12px;
+  width: 100px;
+  height: 100px;
 }
 
-.f-logo svg {
-  width: 38px;
-  height: 38px;
+.f-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .f-brand-name {
@@ -3327,7 +3335,7 @@ body {
 .f-socials {
   display: flex;
   gap: 20px;
-  margin-top: 10px;
+  margin-top: 30px;
 }
 
 .f-soc-link {
