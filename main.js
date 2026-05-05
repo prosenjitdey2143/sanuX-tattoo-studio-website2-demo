@@ -273,68 +273,11 @@
     syncUI(cur);
   }
 
-  /* ══════════════════════════════════════════
-     VIDEO EVENTS
-  ══════════════════════════════════════════ */
-  if (heroVideo) {
-    // Video progress bar
-    heroVideo.addEventListener('timeupdate', function () {
-      if (!progFill || !heroVideo.duration) return;
-      var pct = (heroVideo.currentTime / heroVideo.duration) * 100;
-      progFill.style.width = pct + '%';
-    });
-
-    // When video ends → advance to next slide
-    heroVideo.addEventListener('ended', function () {
-      progFill && (progFill.style.width = '100%');
-      setTimeout(function () { goTo(1); }, 400);
-    });
-
-    // Error fallback
-    heroVideo.addEventListener('error', function () {
-      scheduleNext();
-    });
-  }
-
-  /* ══════════════════════════════════════════
-     EVENTS
-  ══════════════════════════════════════════ */
-  function manualGoTo(index) {
-    goTo(index);
-    // If going back to video slide, video events handle auto-advance
-    // If image slide, scheduleNext is called inside goTo
-  }
-
-  dots.forEach(function (d) {
-    d.addEventListener('click', function () { manualGoTo(parseInt(d.dataset.go)); });
-  });
-  /* vtag-item now handle regular anchor navigation */
-  cards.forEach(function (c) {
-    c.addEventListener('click', function () { manualGoTo(parseInt(c.dataset.go)); });
-  });
-  if (prevBtn) prevBtn.addEventListener('click', function () { manualGoTo((cur - 1 + TOTAL) % TOTAL); });
-  if (nextBtn) nextBtn.addEventListener('click', function () { manualGoTo((cur + 1) % TOTAL); });
-
-  document.addEventListener('keydown', function (e) {
-    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') manualGoTo((cur + 1) % TOTAL);
-    if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   manualGoTo((cur - 1 + TOTAL) % TOTAL);
-  });
-
-  var txStart = 0;
-  document.addEventListener('touchstart', function (e) { txStart = e.changedTouches[0].clientX; }, { passive: true });
-  document.addEventListener('touchend', function (e) {
-    var dx = e.changedTouches[0].clientX - txStart;
-    if (Math.abs(dx) > 50) manualGoTo(dx < 0 ? (cur + 1) % TOTAL : (cur - 1 + TOTAL) % TOTAL);
-  });
-
-  /* ══════════════════════════════════════════
-     INTRO + INIT
-  ══════════════════════════════════════════ */
   function intro() {
     var tl = gsap.timeline({ delay: 0.15 });
 
     gsap.set(['.navbar', '.left-panel', '.vtag', '.num-block', '.dot-nav', '.cta-block', '.scroll-hint'], { opacity: 0 });
-    gsap.set('#ringWrap', { opacity: 0 });  /* opacity only — no transform so CSS spin is unaffected */
+    gsap.set('#ringWrap', { opacity: 0 });
     gsap.set('.navbar',     { y: -65 });
     gsap.set('.left-panel', { x: -50 });
     gsap.set('.num-block',  { x: 55 });
@@ -344,7 +287,7 @@
     tl.to('.navbar',     { y: 0, opacity: 1, duration: .9, ease: EO })
       .to('.left-panel', { x: 0, opacity: 1, duration: .9, ease: EO }, '-=.65')
       .to('.vtag',       { opacity: 1, duration: .9, ease: EO }, '-=.9')
-      .to('#ringWrap',   { opacity: 1, duration: 1.4, ease: EO }, '-=.72')  /* fade in only */
+      .to('#ringWrap',   { opacity: 1, duration: 1.4, ease: EO }, '-=.72')
       .to('.num-block',  { x: 0, opacity: 1, duration: .9, ease: EO }, '-=.8')
       .to('.dot-nav',    { x: 0, opacity: 1, duration: .7, ease: EO }, '-=.65')
       .to('.cta-block',  { y: 0, opacity: 1, duration: .7, ease: EO }, '-=.5')
@@ -353,44 +296,33 @@
   }
 
   function init() {
-    // Hide non-active slots
     slots.forEach(function (s, i) { if (i !== 0) s.style.display = 'none'; });
-
-    // Number rail heights
     setupNumRail();
 
-    // Start video on slide 0
     if (heroVideo) {
       heroVideo.muted = true; 
-      heroVideo.loop  = false; // Ensure it doesn't loop so 'ended' fires
+      heroVideo.loop  = false;
       startVideo();
-      // video 'ended' event handles auto-advance
     } else {
-      scheduleNext(); // fallback
+      scheduleNext();
     }
 
-    // Run intro animation
-    intro();
-
-    // Sync Navigation (Scroll Spy)
     var navLinks = document.querySelectorAll('.nav-links a, .vtag-item');
     var sections = document.querySelectorAll('section');
 
     function updateActiveLink() {
       var fromTop = window.scrollY + 100;
       var currentSection = 'hero';
-
       sections.forEach(function(sec) {
         if (sec.offsetTop <= fromTop && sec.offsetTop + sec.offsetHeight > fromTop) {
           currentSection = sec.getAttribute('id');
         }
       });
-
       navLinks.forEach(function(link) {
         var href = link.getAttribute('href');
         if (href === '#' + currentSection) {
           link.classList.add('active');
-          link.classList.add('is-active'); // for vtag-item
+          link.classList.add('is-active');
         } else {
           link.classList.remove('active');
           link.classList.remove('is-active');
@@ -399,9 +331,8 @@
     }
 
     window.addEventListener('scroll', updateActiveLink);
-    updateActiveLink(); // Initial call
+    updateActiveLink();
 
-    // Click handler for smooth sync (immediate active state)
     navLinks.forEach(function(link) {
       link.addEventListener('click', function(e) {
         navLinks.forEach(function(l) { 
@@ -410,8 +341,6 @@
         });
         this.classList.add('active');
         this.classList.add('is-active');
-
-        // Close mobile menu if open
         var navbar = document.getElementById('navbar');
         if (navbar && navbar.classList.contains('nav-open')) {
           navbar.classList.remove('nav-open');
@@ -419,13 +348,34 @@
       });
     });
 
-    // Mobile Burger Toggle
     var burger = document.getElementById('burger');
     var navbar = document.getElementById('navbar');
     if (burger && navbar) {
       burger.addEventListener('click', function() {
         navbar.classList.toggle('nav-open');
       });
+    }
+
+    var preloader = document.getElementById('preloader');
+    var preFill = document.getElementById('preFill');
+    if (preloader && preFill) {
+      var p = 0;
+      var interval = setInterval(function() {
+        p += Math.random() * 15;
+        if (p >= 100) {
+          p = 100;
+          clearInterval(interval);
+          setTimeout(function() {
+            preloader.classList.add('is-hidden');
+            document.body.style.overflow = '';
+            document.body.style.overflowX = 'hidden';
+            intro(); 
+          }, 400);
+        }
+        preFill.style.width = p + '%';
+      }, 80);
+    } else {
+      intro();
     }
   }
 
