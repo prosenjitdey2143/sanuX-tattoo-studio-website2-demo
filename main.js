@@ -68,12 +68,14 @@
     requestAnimationFrame(ringLoop);
   })();
 
-  // Interaction fallback for video
-  document.addEventListener('click', function() {
+  // Interaction fallback for video (Click & Touch for mobile)
+  var tryPlayVideo = function() {
     if (heroVideo && heroVideo.paused) {
       heroVideo.play().catch(function(){});
     }
-  }, { once: true });
+  };
+  document.addEventListener('click', tryPlayVideo, { once: true });
+  document.addEventListener('touchstart', tryPlayVideo, { once: true });
 
 
   // Hover enlargement
@@ -388,11 +390,14 @@
     };
 
     if (heroVideo) {
-      // If video is already ready
-      if (heroVideo.readyState >= 3) {
+      // If video is already ready (HAVE_CURRENT_DATA or higher)
+      if (heroVideo.readyState >= 2) {
         runIntroOnce();
       } else {
-        heroVideo.addEventListener('canplaythrough', runIntroOnce, { once: true });
+        // 'loadeddata' fires when the first frame is ready
+        heroVideo.addEventListener('loadeddata', runIntroOnce, { once: true });
+        // 'canplay' as backup
+        heroVideo.addEventListener('canplay', runIntroOnce, { once: true });
         // Error fallback
         heroVideo.addEventListener('error', runIntroOnce, { once: true });
       }
