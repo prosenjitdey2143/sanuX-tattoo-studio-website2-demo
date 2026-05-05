@@ -83,16 +83,14 @@
 
 <body>
 
-  <!-- ═══════════ PREMIUM PRELOADER ═══════════ -->
-  <div class="preloader" id="preloader">
-    <div class="pre-content">
-      <div class="pre-logo">
-        <img src="./images/logo.png" alt="Sanu Tattoo Studio Logo">
+  <!-- ═══════════ PRELOADER ═══════════ -->
+  <div id="loader" class="loader">
+    <div class="loader-content">
+      <img src="./images/logo.png" alt="Sanu Tattoo Studio Logo" class="loader-logo" width="120" height="120">
+      <div class="loader-bar-wrap">
+        <div class="loader-bar"></div>
       </div>
-      <div class="pre-bar">
-        <div class="pre-fill" id="preFill"></div>
-      </div>
-      <p class="pre-text">Crafting Identity...</p>
+      <p class="loader-text">Loading Excellence...</p>
     </div>
   </div>
 
@@ -117,7 +115,7 @@
       <!-- SLIDE 0 — VIDEO -->
       <div class="bg-slide is-active" id="bg0" data-type="video">
         <video id="heroVideo" class="bg-video" src="images/Tattoo_artist_holding_machine_202605042117.mp4" autoplay
-          muted playsinline preload="auto" poster="images/slide1.png"></video>
+          muted playsinline preload="auto"></video>
         <div class="bg-fog"></div>
       </div>
 
