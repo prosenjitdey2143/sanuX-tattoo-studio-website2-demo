@@ -378,6 +378,14 @@
     var runIntroOnce = function () {
       if (isIntroRun) return;
       isIntroRun = true;
+      
+      // Force play attempt
+      if (heroVideo) {
+        heroVideo.play().catch(function(e) {
+          console.warn("Autoplay blocked, waiting for interaction");
+        });
+      }
+
       if (loader) {
         loader.classList.add('is-hidden');
         // Delay intro animation slightly to allow loader fade out
